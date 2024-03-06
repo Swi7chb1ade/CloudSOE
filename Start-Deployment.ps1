@@ -8,28 +8,31 @@ $osLanguage = "en-us"
 $osEdition = "Enterprise"
 $osActivation = "Volume"
 
+# Unattend location
+$unattendUrl = "https://raw.githubusercontent.com/Swi7chb1ade/cloudosd/main/unattend.xml"
+
 # Start Message
 Write-Host -ForegroundColor Green "Starting ABL OSDCloud Zero Touch Install"
 Start-Sleep -Seconds 5
 
-# Warning Message
-Write-Host -ForegroundColor Red "#################################################################################"
-Write-Host -ForegroundColor Red "#                         WARNING WARNING WARNING                               #"
-Write-Host -ForegroundColor Red "# If you booted using Ventoy, remove the USB From the computer or things        #"
-Write-Host -ForegroundColor Red "# will break - otherwise leave it connected.                                    #"
-Write-Host -ForegroundColor Red "# Continuing after this point is destructive and automatic                      #"
-Write-Host -ForegroundColor Red "# the SSD will be automatically wiped and Windows installed                     #"
-Write-Host -ForegroundColor Red "# Press ENTER if you are sure you want to wipe the computer and install Windows #"
-Write-Host -ForegroundColor Red "#################################################################################"
+# Warning Message and confirmation
+$warningShell = New-Object -ComObject Wscript.Shell
+$userResponse = $warningShell.Popup("If you booted using Ventory, remove the USB from the computer NOW or things will break. `n`nContinuing after this point is DESTRUCTIVE and AUTOMATIC `n`nThe SSD will be automatically wiped and Windows installed `n`nClick OK to continue or CANCEL to abort",0,"WARNING",16+1)
 
-# Pause to wait for user to confirm 
-pause
+# If user clicks OK, begin process
+if($userResponse -eq 1){
 
-# SENDIT
+# Start OSDCloud Installation
 Start-OSDCloud -OSVersion $osVersion -OSBuild $osBuild -OSLanguage $osLanguage -OSEdition $osEdition -OSActivation $osActivation -ZTI
 
 # Copy Unattend File
-Copy-Item -Path "X:\OSDCloud\Config\Scripts\unattend.xml" -Destination "C:\Windows\Panther"
+Invoke-WebRequest $unattendUrl -outFile "C:\Windows\Panther\unattend.xml"
 
-#Restart
+# Restart the computer once completed 
 Restart-Computer -Force
+}
+
+# If user clicks CANCEL, stop process
+else {
+    exit 1
+}
