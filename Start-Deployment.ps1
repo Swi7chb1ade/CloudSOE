@@ -24,4 +24,10 @@ Write-Host -ForegroundColor Red "###############################################
 pause
 
 # SENDIT
-Start-OSDCloud -OSVersion $osVersion -OSBuild $osBuild -OSLanguage $osLanguage -OSEdition $osEdition -OSActivation $osActivation -Restart -ZTI
+Start-OSDCloud -OSVersion $osVersion -OSBuild $osBuild -OSLanguage $osLanguage -OSEdition $osEdition -OSActivation $osActivation -ZTI
+
+# Copy Unattend File
+Copy-Item -Path "X:\OSDCloud\Config\Scripts\unattend.xml" -Destination "C:\Windows\Panther"
+
+#Restart
+Restart-Computer -Force
