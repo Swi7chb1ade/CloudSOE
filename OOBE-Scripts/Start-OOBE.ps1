@@ -14,7 +14,7 @@
 $scriptFolderPath = "$env:SystemDrive\OSDCloud\Scripts"
 $ScriptPathOOBE = $(Join-Path -Path $scriptFolderPath -ChildPath "OOBE.ps1")
 $ScriptPathSendKeys = $(Join-Path -Path $scriptFolderPath -ChildPath "SendKeys.ps1")
-$serviceUIUrl = "https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/Tools/ServiceUIx64.exe"
+$serviceUIUrl = "https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/Resources/ServiceUIx64.exe"
 
 # Create Script Folder Path if it does not exist
 If(!(Test-Path -Path $scriptFolderPath)) {
@@ -27,10 +27,10 @@ $OOBEScript =@"
 Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Ignore | Out-Null
 
 Write-Host -ForegroundColor DarkGray "Executing Domain Join task"
-Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/Join-Domain.ps1" -Wait
+Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/OOBE-Scripts/Join-Domain.ps1" -Wait
 
 Write-Host -ForegroundColor DarkGray "Executing Cleanup Script"
-Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/Cleanup-OSDCloud.ps1" -Wait
+Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/OOBE-Scripts/Cleanup-OSDCloud.ps1" -Wait
 
 # Cleanup scheduled Tasks
 Write-Host -ForegroundColor DarkGray "Unregistering Scheduled Tasks"
