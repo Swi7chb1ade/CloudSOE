@@ -5,6 +5,7 @@ To prepare an OSDCloud Workspace, in PowerShell, as an Admin:
 
 ### Install OSD Module
 Installs the OSD Module from the PowerShell Gallery
+
     Install-Module -Name OSD -Force
 
 ### Import OSD Module
