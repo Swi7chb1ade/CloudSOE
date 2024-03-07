@@ -1,14 +1,27 @@
+<#
+.SYNOPSIS
+    Script for use with OSDCloud to deploy Windows 11 Enterprise. 
+    This script does a few fancy things. To be explained here at a later point
+.FUNCTIONALITY
+        OSDCloud OOBE Task kick off script
+.NOTES
+    Author: LZV
+    Last Edit: 2024-03-07
+    Version 0.1 - Creation (Alpha)
+#>
 
+# Variables for script
 $scriptFolderPath = "$env:SystemDrive\OSDCloud\Scripts"
 $ScriptPathOOBE = $(Join-Path -Path $scriptFolderPath -ChildPath "OOBE.ps1")
 $ScriptPathSendKeys = $(Join-Path -Path $scriptFolderPath -ChildPath "SendKeys.ps1")
-
 $serviceUIUrl = "https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/Tools/ServiceUIx64.exe"
 
+# Create Script Folder Path if it does not exist
 If(!(Test-Path -Path $scriptFolderPath)) {
     New-Item -Path $scriptFolderPath -ItemType Directory -Force | Out-Null
 }
 
+# Script to be run during the OOBE Process
 $OOBEScript =@"
 `$Global:Transcript = "`$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-OOBEScripts.log"
 Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Ignore | Out-Null
@@ -30,8 +43,10 @@ Unregister-ScheduledTask -TaskName "Scheduled Task for OSDCloud post installatio
 Stop-Transcript -Verbose | Out-File
 "@
 
+# Output the script from the variable into a file
 Out-File -FilePath $ScriptPathOOBE -InputObject $OOBEScript -Encoding ascii
 
+# Script that "Sends Keys" to the computer, to automate part of OOBE
 $SendKeysScript = @"
 `$Global:Transcript = "`$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-SendKeys.log"
 Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Ignore | Out-Null
@@ -52,6 +67,7 @@ Write-Host -ForegroundColor DarkGray "SendKeys: SHIFT + F10"
 Stop-Transcript -Verbose | Out-File
 "@
 
+# Output the script from the variable into a file
 Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding ascii
 
 # Download ServiceUI.exe
