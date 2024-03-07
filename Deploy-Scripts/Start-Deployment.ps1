@@ -28,7 +28,8 @@ $osEdition = "Enterprise"
 $osActivation = "Volume"
 
 # Unattend location
-$unattendUrl = "https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/unattend.xml"
+$unattendUrl = "https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/Resources/unattend.xml"
+$setupCompleteUrl = "https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/OOBE-Scripts/SetupComplete.cmd"
 
 # Start Message
 Write-Host -ForegroundColor Green "Starting ABL OSDCloud Zero Touch Install"
@@ -56,6 +57,9 @@ if($userResponse -eq 1){
 
     # Copy Unattend File    
     Invoke-WebRequest $unattendUrl -outFile "C:\Windows\Panther\unattend.xml"
+
+    # Copy SetupComplete.cmd file
+    Invoke-WebRequest $setupCompleteUrl -outFile "C:\Windows\Setup\Scripts\SetupComplete.cmd"
 
     # Create text file containing asset number
     $assetName | Out-File "C:\OSDCloud\AssetName.txt"
