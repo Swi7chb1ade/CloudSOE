@@ -59,7 +59,7 @@ if($userResponse -eq 1){
     Invoke-WebRequest $unattendUrl -outFile "C:\Windows\Panther\unattend.xml"
 
     # Copy SetupComplete.cmd file
-    Invoke-WebRequest $setupCompleteUrl -outFile "C:\Windows\Setup\Scripts\SetupComplete.cmd"
+    #Invoke-WebRequest $setupCompleteUrl -outFile "C:\Windows\Setup\Scripts\SetupComplete.cmd"
 
     # Create text file containing asset number
     $assetName | Out-File "C:\OSDCloud\AssetName.txt"
