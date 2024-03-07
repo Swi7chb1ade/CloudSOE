@@ -31,12 +31,12 @@ This grabs drivers for Dell computers, VMware and USB Dongles
 ### Set the wallpaper
 This task is entierly optional but is a nice touch
 
-    Edit-OSDCloudWinPE -Wallpaper "PATH TO WALLPAPER"
+    Edit-OSDCloudWinPE -Wallpaper "C:\OSDCloud\Wallpaper.jpg"
 
 ### Set the Startup Command to launch the PowerShell Script
 
     Edit-OSDCloudWinPE -WebPSScript https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/Deploy-Scripts/Start-Deployment.ps1
 
-Contents:
-- Start-Deployment.ps1
-File used by OSDCloud to kick off deployment. Containts a set of standard settings for SOE
+### Or you can do this in one giant command
+
+    Edit-OSDCloudWinPE -WebPSScript https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/Deploy-Scripts/Start-Deployment.ps1 -Wallpaper "C:\OSDCloud\Wallpaper.jpg" -CloudDriver Dell,VMware,USB
