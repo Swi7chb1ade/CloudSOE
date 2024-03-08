@@ -7,7 +7,7 @@
     OSDCloud Kick off script and finishing touches 
 .NOTES
     Author: LZV
-    Last Edit: 2024-03-07
+    Last Edit: 2024-03-08
     Version 0.1 - Creation (Alpha)
 #>
 
@@ -30,9 +30,10 @@ $osActivation = "Volume"
 # Unattend location
 $unattendUrl = "https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/Resources/unattend.xml"
 $setupCompleteUrl = "https://raw.githubusercontent.com/Swi7chb1ade/CloudSOE/main/OOBE-Scripts/SetupComplete.cmd"
+$unattendFile = "C:\Windows\Panther\unattend.xml"
 
 # Start Message
-Write-Host -ForegroundColor Green "Starting ABL OSDCloud Zero Touch Install"
+Write-Host -ForegroundColor Green "Starting ABL OSD Cloud, please wait..."
 Start-Sleep -Seconds 5
 
 # Warning Message and confirmation
@@ -55,14 +56,22 @@ if($userResponse -eq 1){
     # Start OSDCloud Installation
     Start-OSDCloud -OSVersion $osVersion -OSBuild $osBuild -OSLanguage $osLanguage -OSEdition $osEdition -OSActivation $osActivation -ZTI
 
-    # Copy Unattend File    
-    Invoke-WebRequest $unattendUrl -outFile "C:\Windows\Panther\unattend.xml"
+    # Copy Unattend File
+    Write-Host -ForegroundColor Green "Copying unattend.xml file from Github"
+    Invoke-WebRequest $unattendUrl -outFile $unattendFile
 
     # Copy SetupComplete.cmd file
     #Invoke-WebRequest $setupCompleteUrl -outFile "C:\Windows\Setup\Scripts\SetupComplete.cmd"
 
     # Create text file containing asset number
+    Write-Host -ForegroundColor Green "Creating AssetName.txt file with $assetName as contents"
     $assetName | Out-File "C:\OSDCloud\AssetName.txt"
+
+    # Edit the copied unattend.xml file to include the hostname
+    Write-Host -ForegroundColor Green "Modifying unattend.xml file to include hostname"
+    $unattendXml = [xml](Get-Content $unattendFile)
+    $unattendXml.unattend.settings[2].component[0].ComputerName = $assetName
+    $unattendXml.save("$unattendFile")
 
     # Sleep for 30 secnods
     Write-Host -ForegroundColor Green "OSDCloud deployment for $assetName done - Rebooting in 30 seconds"
